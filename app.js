@@ -12,8 +12,8 @@ app.use(express.json());
 
 const departamentoRoutes = require("./routes/DepartamentoRoutes");
 
-app.use('/departamento', departamentoRoutes)
+app.use('/departamentos', departamentoRoutes)
 
 app.listen(port, () => {
   console.log("Servidor online...")
-})
+});

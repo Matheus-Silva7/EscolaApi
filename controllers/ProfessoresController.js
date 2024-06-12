@@ -1,0 +1,1 @@
+const Professores = require("../model/ProfessoresModel");

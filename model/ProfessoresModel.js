@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const database = require("../dbConnect");
-const Departamento = require("./DepartamentosModel")
+const Departamento = require("./DepartamentosModel");
 
 const ProfessoresSchema = database.define('professores', {
   id: {
@@ -32,9 +32,9 @@ const ProfessoresSchema = database.define('professores', {
   departamentoId: {
     type: Sequelize.INTEGER,
     references: {
-      model: 'despartamentos', 
-      key: 'id', 
-  }
+      model: Departamento,
+      key: 'id',
+    }
   },
 }, {
   timestamps: false 

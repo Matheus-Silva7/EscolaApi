@@ -46,3 +46,17 @@ exports.updateDepartamento = async (req, res) => {
 res.status(200).json({departamentoAtualizado})
 
 };
+
+exports.deleteDepartamento = async (req, res) => {
+  const departamentoId = req.params.id;
+  const deleteD = await Departamento.destroy({
+    where: { id: departamentoId }
+  });
+
+  if (deleteD) {
+    res.status(200).json({ message: "Departamento excluído com sucesso." });
+  } else {
+    res.status(404).json({ message: "Departamento não encontrado." });
+  }
+}
+

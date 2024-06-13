@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const database = require("../dbConnect");
-
+const Departamento = require("./DepartamentosModel")
 
 const ProfessoresSchema = database.define('professores', {
   id: {

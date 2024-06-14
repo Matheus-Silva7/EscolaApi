@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const database = require("../dbConnect");
-const Departamento = require("./DepartamentosModel");
 
 const ProfessoresSchema = database.define('professores', {
   id: {
@@ -28,14 +27,7 @@ const ProfessoresSchema = database.define('professores', {
   email: {
     type: Sequelize.STRING,
     allowNull: false,
-  },
-  departamentoId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Departamento,
-      key: 'id',
-    }
-  },
+  }
 }, {
   timestamps: false 
 });

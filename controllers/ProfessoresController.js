@@ -1,25 +1,20 @@
 const Professor = require("../model/ProfessoresModel");
-const Departamento = require("../model/DepartamentosModel");
 
 // Criar um novo professor
 exports.criarProfessor = async (req, res) => {
-  const { nome, cpf, endereco, telefone, email, departamentoId } = req.body;
+  const { nome, cpf, endereco, telefone, email } = req.body;
 
   try {
 
     const cpfExist = await Professor.findOne({ where: { cpf: cpf } });
     if (!cpfExist) {
-      const departamento = await Departamento.findOne({ where: { id: departamentoId } });
-      if (departamento) {
-        // Crie um novo professor se o departamento existir
+      
         const novoProfessor = await Professor.create({
-          nome, cpf, endereco, telefone, email, departamentoId
+          nome, cpf, endereco, telefone, email,
         });
 
         res.status(201).json({ novoProfessor });
-      } else {
-        res.status(500).json({ message: "Departamento informado não existe!" });
-      }
+    
     } else {
       res.status(500).json({ message: "Cpf já cadastrado na base de dados!" })
     }
@@ -40,14 +35,33 @@ exports.todosProfessores = async (req, res) => {
   }
 };
 
+exports.buscarProfessorPorId = async (req, res) => {
+  const professorId = req.params.id;
+
+  try {
+    const professor = await Professor.findOne({
+      where: { id: professorId }
+    });
+
+    if (professor) {
+      res.status(200).json({ professor });
+    } else {
+      res.status(404).json({ message: "Professor não encontrado." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Erro ao buscar professor." });
+  }
+};
+
 // Atualizar um professor
 exports.updateProfessor = async (req, res) => {
   const professorId = req.params.id;
-  const { nome, cpf, endereco, telefone, email, departamentoId } = req.body;
+  const { nome, cpf, endereco, telefone, email } = req.body;
 
   try {
     const [updated] = await Professor.update(
-      { nome, cpf, endereco, telefone, email, departamentoId },
+      { nome, cpf, endereco, telefone, email },
       { where: { id: professorId } }
     );
 

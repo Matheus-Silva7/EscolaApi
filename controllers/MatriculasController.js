@@ -36,6 +36,24 @@ exports.todasMatriculas= async (req, res) => {
   res.status(200).json({ matriculas });
 };
 
+exports.buscarMatriculaPorId = async (req, res) => {
+  const matriculaId = req.params.id;
+
+  try {
+    const matricula = await Matriculas.findOne({
+      where: { id: matriculaId }
+    });
+
+    if (matricula) {
+      res.status(200).json({ matricula });
+    } else {
+      res.status(404).json({ message: "Matricula não encontrado." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Erro ao buscar matricula." });
+  }
+};
 exports.updateMatricula = async (req, res) => {
   const matriculaId = req.params.id;
   const { alunoId, disciplinaId, semestre, notaFinal, presencas, faltas  } = req.body

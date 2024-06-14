@@ -45,6 +45,25 @@ exports.todasDisciplinas = async (req, res) => {
   res.status(200).json({ disciplinas });
 };
 
+exports.buscarDisciplinaPorId = async (req, res) => {
+  const disciplinaId = req.params.id;
+
+  try {
+    const disciplina = await Disciplina.findOne({
+      where: { id: disciplinaId }
+    });
+
+    if (disciplina) {
+      res.status(200).json({ disciplina });
+    } else {
+      res.status(404).json({ message: "Disciplina não encontrado." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Erro ao buscar disciplina." });
+  }
+};
+
 exports.updateDisciplina = async (req, res) => {
   const disciplinaId = req.params.id;
   const { nome, codigo, descricao, cargaHoraria, cursoId  } = req.body

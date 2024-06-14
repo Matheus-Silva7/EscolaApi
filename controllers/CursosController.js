@@ -1,19 +1,16 @@
 const Curso = require("../model/CursosModel");
-const Departamento = require("../model/DepartamentosModel")
+const Aluno = require("../model/AlunosModel");
 
 exports.criarCurso = async (req, res) => {
 
-    const { nome, descricao, numero, cargaHorariaPorSemestre, cargaHorariaTotal, numeroSemestres, nivel, departamentoId } = req.body
+    const { nome, descricao, numero, cargaHorariaPorSemestre, cargaHorariaTotal, numeroSemestres, nivel } = req.body
 
     try {
         const numeroExist = await Curso.findOne({
             where: { numero: numero }
         })
         if (!numeroExist) {
-            const departamento = await Departamento.findOne({
-                where: { id: departamentoId }
-            })
-            if (departamento) {
+          
                 const novoCurso = await Curso.create({
                     nome,
                     descricao,
@@ -21,14 +18,11 @@ exports.criarCurso = async (req, res) => {
                     cargaHorariaPorSemestre,
                     cargaHorariaTotal,
                     numeroSemestres, 
-                    nivel,
-                    departamentoId
+                    nivel
                 })
 
                 res.status(201).json({ novoCurso })
-            } else {
-                res.status(500).json({ message: "Departamento informado não existe!" })
-            }
+            
         } else{
             res.status(500).json({ message: "numero do curso já cadastrado na base de dados!"})
         }
@@ -43,9 +37,71 @@ exports.todosCursos = async (req, res) => {
     res.status(200).json({ cursos });
 };
 
+exports.buscarCursoPorId = async (req, res) => {
+    const cursoId = req.params.id;
+  
+    try {
+      const curso = await Curso.findOne({
+        where: { id: cursoId }
+      });
+  
+      if (curso) {
+        res.status(200).json({ curso });
+      } else {
+        res.status(404).json({ message: "Curso não encontrado." });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Erro ao buscar curso." });
+    }
+  };
+
+  exports.buscarCursosPorNivel = async (req, res) => {
+    const nivel = req.params.nivel;
+  
+    try {
+      const cursos = await Curso.findAll({
+        where: { nivel: nivel }
+      });
+  
+      if (cursos.length > 0) {
+        res.status(200).json({ cursos });
+      } else {
+        res.status(404).json({ message: "Nenhum curso encontrado para o nível especificado." });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Erro ao buscar cursos." });
+    }
+  };
+  
+
+/* exports.alunosPorCurso = async (req, res) => {
+  const cursoId = req.params.cursoId;
+
+  try {
+    const curso = await Curso.findByPk(cursoId, {
+      include: {
+        model: Aluno,
+        as: 'alunos'
+      }
+    });
+
+    if (curso) {
+      res.status(200).json({ alunos: curso.alunos });
+    } else {
+      res.status(404).json({ message: "Curso não encontrado." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Erro ao buscar alunos do curso." });
+  }
+};
+ */
+  
 exports.updateCurso = async (req, res) => {
     const cursoId = req.params.id;
-    const { nome, descricao, numero, cargaHorariaPorSemestre, cargaHorariaTotal, nivel, departamentoId } = req.body
+    const { nome, descricao, numero, cargaHorariaPorSemestre, cargaHorariaTotal, nivel } = req.body
 
     const update = await Curso.update(
         {
@@ -54,8 +110,7 @@ exports.updateCurso = async (req, res) => {
             numero,
             cargaHorariaPorSemestre,
             cargaHorariaTotal,
-            nivel,
-            departamentoId
+            nivel
         },
         {
             where: { id: cursoId },

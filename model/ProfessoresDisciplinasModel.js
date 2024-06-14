@@ -29,7 +29,4 @@ const ProfessoresDisciplinasSchema = database.define('professoresDisciplinas', {
   timestamps: false 
 });
 
-Professor.belongsToMany(Disciplina, { through: ProfessoresDisciplinasSchema });
-Disciplina.belongsToMany(Professor, { through: ProfessoresDisciplinasSchema });
-
 module.exports = ProfessoresDisciplinasSchema;

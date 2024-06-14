@@ -12,7 +12,7 @@ app.use(express.json());
   await database.sync()
 })();
 
-const departamentoRoutes = require("./routes/DepartamentoRoutes");
+
 const cursoRoutes = require("./routes/CursoRoutes");
 const disciplinaRoutes = require("./routes/DisciplinaRoutes");
 const alunosRoutes = require("./routes/AlunoRoutes");
@@ -20,7 +20,6 @@ const matriculaRoutes = require("./routes/MatriculaRoutes");
 const professorRoutes = require("./routes/ProfessorRoutes");
 const professorDisciplinaRoutes = require("./routes/ProfessorDisciplina");
 
-app.use('/departamentos', departamentoRoutes)
 app.use('/cursos', cursoRoutes)
 app.use('/professores', professorRoutes)
 app.use('/disciplinas', disciplinaRoutes)

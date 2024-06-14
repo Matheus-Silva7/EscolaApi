@@ -36,14 +36,7 @@ const CursosSchema = database.define('cursos', {
   nivel: {
     type: Sequelize.STRING,
     allowNull: false,
-  },
-  departamentoId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'departamentos', 
-      key: 'id', 
   }
-  },
 }, {
   timestamps: false 
 });

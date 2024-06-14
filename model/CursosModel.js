@@ -29,6 +29,10 @@ const CursosSchema = database.define('cursos', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  numeroSemestres: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   nivel: {
     type: Sequelize.STRING,
     allowNull: false,

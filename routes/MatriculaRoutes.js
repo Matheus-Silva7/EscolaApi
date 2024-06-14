@@ -3,7 +3,7 @@ const router = express.Router();
 const matriculaController = require("../controllers/MatriculasController")
 
 router.post("/criar", matriculaController.criarMatricula);
-router.get("/todos", matriculaController.todasMatriculas);
+router.get("/", matriculaController.todasMatriculas);
 router.patch("/update/:id", matriculaController.updateMatricula);
 router.delete("/delete/:id", matriculaController.deleteMatricula);
 

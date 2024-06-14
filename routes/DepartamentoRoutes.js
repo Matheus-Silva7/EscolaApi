@@ -5,7 +5,7 @@ const departamentoController = require("../controllers/DepartamentosController")
 
 router.post("/criar", departamentoController.criarDepartamento);
 
-router.get("/todos", departamentoController.todosDepartamentos);
+router.get("/", departamentoController.todosDepartamentos);
 
 router.patch("/update/:id", departamentoController.updateDepartamento);
 

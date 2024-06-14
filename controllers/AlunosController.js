@@ -8,22 +8,40 @@ exports.criarAluno= async (req, res) => {
   const { nome, numero, cpf, rg, enderecoAtual, telefone, enderecoPermanente, email, dataNascimento, sexo, cursoId, departamentoId } = req.body
 
   try {
-    const curso = await Curso.findOne({
-      where: { id: cursoId }
+
+    const rgExist = await Aluno.findOne({
+      where: { rg: rg }
     })
-    const departamento = await Departamento.findOne({
-      where: { id: departamentoId }
+    const cpfExist = await Aluno.findOne({
+      where: { cpf: cpf }
+    })
+    const numeroExist = await Aluno.findOne({
+      where: { numero: numero }
     })
 
-    if (curso && departamento) {
-      const novoAluno = await Aluno.create({
-        nome, numero, cpf, rg, enderecoAtual, telefone, enderecoPermanente, email, dataNascimento, sexo, cursoId, departamentoId
+    if(!rgExist && !cpfExist && !numeroExist){
+      
+      const curso = await Curso.findOne({
+        where: { id: cursoId }
       })
-
-      res.status(201).json({ novoAluno })
-    } else {
-      res.status(400).json({ message: "Curso ou departamento informado não existe!" })
+      const departamento = await Departamento.findOne({
+        where: { id: departamentoId }
+      })
+  
+      if (curso && departamento) {
+        const novoAluno = await Aluno.create({
+          nome, numero, cpf, rg, enderecoAtual, telefone, enderecoPermanente, email, dataNascimento, sexo, cursoId, departamentoId
+        })
+  
+        res.status(201).json({ novoAluno })
+      } else {
+        res.status(500).json({ message: "Curso ou departamento informado não existe!" })
+      }
+    } else{
+      res.status(500).json({ message: "Rg, Cpf ou numero já cadastrados na base de dados!" })
     }
+
+
 
   } catch (error) {
     console.log(error)

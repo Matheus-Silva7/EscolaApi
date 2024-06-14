@@ -39,7 +39,7 @@ const MatriculasSchema = database.define('matriculas', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-}, {
+}, { 
   timestamps: false 
 });
 

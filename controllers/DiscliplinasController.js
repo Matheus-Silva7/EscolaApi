@@ -7,18 +7,32 @@ exports.criarDisciplina = async (req, res) => {
   const { nome, codigo, descricao, cargaHoraria, cursoId } = req.body
 
   try {
-    const curso = await Curso.findOne({
-      where: { id: cursoId }
+  
+    const nomeExist = await Disciplina.findOne({
+      where: { nome: nome }
+    })
+    const codigoExist = await Disciplina.findOne({
+      where: { codigo: codigo }
     })
 
-    if (curso) {
-      const novaDisciplina = await Disciplina.create({
-        nome, codigo, descricao, cargaHoraria, cursoId 
+    if(!nomeExist && !codigoExist){
+      
+      const curso = await Curso.findOne({
+        where: { id: cursoId }
       })
-
-      res.status(201).json({ novaDisciplina })
-    } else {
-      res.status(400).json({ message: "Curso informado não existe!" })
+      
+      
+      if (curso) {
+        const novaDisciplina = await Disciplina.create({
+          nome, codigo, descricao, cargaHoraria, cursoId 
+        })
+        
+        res.status(201).json({ novaDisciplina })
+      } else {
+        res.status(500).json({ message: "Curso informado não existe!" })
+      }
+    }else{
+      res.status(500).json({ message: "Nome ou codigo já cadastrados na base de dados!" })
     }
 
   } catch (error) {

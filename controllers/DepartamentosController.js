@@ -2,17 +2,34 @@ const Departamento = require("../model/DepartamentosModel");
 
 exports.criarDepartamento = async (req, res) => {
   try {
+
     const { nome, sigla, codigo, endereco, telefone } = req.body;
 
-    const novoDepartamento = await Departamento.create({
-      nome,
-      sigla,
-      codigo,
-      endereco,
-      telefone,
-    });
+    const nomeExist = await Departamento.findOne({
+      where: { nome: nome }
+    })
+    const siglaExist = await Departamento.findOne({
+      where: { sigla: sigla }
+    })
+    const codigoExist = await Departamento.findOne({
+      where: { codigo: codigo }
+    })
 
-    res.status(201).json({ novoDepartamento });
+    if (!nomeExist && !siglaExist && !codigoExist){
+      const novoDepartamento = await Departamento.create({
+        nome,
+        sigla,
+        codigo,
+        endereco,
+        telefone,
+      });
+  
+      res.status(201).json({ novoDepartamento });
+    } else{
+      res.status(500).json({ message: "Nome ou sigla ou codigo já cadastrados na base de dados!" })
+    }
+
+   
   } catch (error) {
     console.log(error);
   }

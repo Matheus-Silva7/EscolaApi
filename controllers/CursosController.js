@@ -3,27 +3,34 @@ const Departamento = require("../model/DepartamentosModel")
 
 exports.criarCurso = async (req, res) => {
 
-    const {nome, descricao, numero,cargaHorariaPorSemestre,cargaHorariaTotal, nivel, departamentoId } = req.body
+    const { nome, descricao, numero, cargaHorariaPorSemestre, cargaHorariaTotal, numeroSemestres, nivel, departamentoId } = req.body
 
     try {
-        const departamento = await Departamento.findOne({
-            where: { id: departamentoId }
+        const numeroExist = await Curso.findOne({
+            where: { numero: numero }
         })
-
-        if (departamento) {
-            const novoCurso = await Curso.create({
-                nome,
-                descricao,
-                numero,
-                cargaHorariaPorSemestre,
-                cargaHorariaTotal,
-                nivel,
-                departamentoId
+        if (!numeroExist) {
+            const departamento = await Departamento.findOne({
+                where: { id: departamentoId }
             })
+            if (departamento) {
+                const novoCurso = await Curso.create({
+                    nome,
+                    descricao,
+                    numero,
+                    cargaHorariaPorSemestre,
+                    cargaHorariaTotal,
+                    numeroSemestres, 
+                    nivel,
+                    departamentoId
+                })
 
-            res.status(201).json({ novoCurso })
-        } else {
-            res.status(400).json({ message: "Departamento informado não existe!" })
+                res.status(201).json({ novoCurso })
+            } else {
+                res.status(500).json({ message: "Departamento informado não existe!" })
+            }
+        } else{
+            res.status(500).json({ message: "numero do curso já cadastrado na base de dados!"})
         }
 
     } catch (error) {
@@ -36,19 +43,19 @@ exports.todosCursos = async (req, res) => {
     res.status(200).json({ cursos });
 };
 
-exports.updateCurso= async (req, res) => {
+exports.updateCurso = async (req, res) => {
     const cursoId = req.params.id;
-    const {nome, descricao, numero,cargaHorariaPorSemestre,cargaHorariaTotal, nivel, departamentoId } = req.body
+    const { nome, descricao, numero, cargaHorariaPorSemestre, cargaHorariaTotal, nivel, departamentoId } = req.body
 
     const update = await Curso.update(
         {
             nome,
-                descricao,
-                numero,
-                cargaHorariaPorSemestre,
-                cargaHorariaTotal,
-                nivel,
-                departamentoId
+            descricao,
+            numero,
+            cargaHorariaPorSemestre,
+            cargaHorariaTotal,
+            nivel,
+            departamentoId
         },
         {
             where: { id: cursoId },

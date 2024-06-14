@@ -6,18 +6,22 @@ exports.criarProfessor = async (req, res) => {
   const { nome, cpf, endereco, telefone, email, departamentoId } = req.body;
 
   try {
-    // Verifique se o departamento existe
-    const departamento = await Departamento.findOne({ where: { id: departamentoId } });
 
-    if (departamento) {
-      // Crie um novo professor se o departamento existir
-      const novoProfessor = await Professor.create({
-        nome, cpf, endereco, telefone, email, departamentoId
-      });
+    const cpfExist = await Professor.findOne({ where: { cpf: cpf } });
+    if (!cpfExist) {
+      const departamento = await Departamento.findOne({ where: { id: departamentoId } });
+      if (departamento) {
+        // Crie um novo professor se o departamento existir
+        const novoProfessor = await Professor.create({
+          nome, cpf, endereco, telefone, email, departamentoId
+        });
 
-      res.status(201).json({ novoProfessor });
+        res.status(201).json({ novoProfessor });
+      } else {
+        res.status(500).json({ message: "Departamento informado não existe!" });
+      }
     } else {
-      res.status(400).json({ message: "Departamento informado não existe!" });
+      res.status(500).json({ message: "Cpf já cadastrado na base de dados!" })
     }
   } catch (error) {
     console.error(error);

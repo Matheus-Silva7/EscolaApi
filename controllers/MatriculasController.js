@@ -4,7 +4,6 @@ const Disciplina = require("../model/DisciplinasModel");
 const Aluno = require("../model/AlunosModel");
 
 
-
 exports.criarMatricula = async (req, res) => {
 
   const { alunoId, disciplinaId, semestre, notaFinal, presencas, faltas } = req.body
@@ -24,7 +23,7 @@ exports.criarMatricula = async (req, res) => {
 
       res.status(201).json({ novaMatricula })
     } else {
-      res.status(400).json({ message: "Aluno ou disciplina informado não existe!" })
+      res.status(500).json({ message: "Aluno ou disciplina informado não existe!" })
     }
 
   } catch (error) {

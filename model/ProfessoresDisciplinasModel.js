@@ -1,5 +1,7 @@
 const Sequelize = require("sequelize");
 const database = require("../dbConnect");
+const Professor = require("./ProfessoresModel")
+const Disciplina = require("./DisciplinasModel")
 
 
 const ProfessoresDisciplinasSchema = database.define('professoresDisciplinas', {
@@ -12,19 +14,22 @@ const ProfessoresDisciplinasSchema = database.define('professoresDisciplinas', {
   professorId: {
     type: Sequelize.INTEGER,
     references: {
-      model: 'professores', 
+      model: Professor, 
       key: 'id', 
   }
   },
   disciplinaId: {
     type: Sequelize.INTEGER,
     references: {
-      model: 'disciplinas', 
+      model: Disciplina, 
       key: 'id', 
   }
   }
 }, {
   timestamps: false 
 });
+
+Professor.belongsToMany(Disciplina, { through: ProfessoresDisciplinasSchema });
+Disciplina.belongsToMany(Professor, { through: ProfessoresDisciplinasSchema });
 
 module.exports = ProfessoresDisciplinasSchema;

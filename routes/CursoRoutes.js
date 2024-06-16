@@ -6,7 +6,6 @@ router.post("/criar", cursoController.criarCurso);
 router.get("/", cursoController.todosCursos);
 router.get("/:id", cursoController.buscarCursoPorId);
 router.get("nivel/:nivel", cursoController.buscarCursosPorNivel);
-/* router.get('/:cursoId/alunos', cursoController.alunosPorCurso); */
 router.patch("/update/:id", cursoController.updateCurso);
 router.delete("/delete/:id", cursoController.deleteCurso);
 

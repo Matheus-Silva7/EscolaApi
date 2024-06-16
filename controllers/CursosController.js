@@ -75,29 +75,6 @@ exports.buscarCursoPorId = async (req, res) => {
     }
   };
   
-
-/* exports.alunosPorCurso = async (req, res) => {
-  const cursoId = req.params.cursoId;
-
-  try {
-    const curso = await Curso.findByPk(cursoId, {
-      include: {
-        model: Aluno,
-        as: 'alunos'
-      }
-    });
-
-    if (curso) {
-      res.status(200).json({ alunos: curso.alunos });
-    } else {
-      res.status(404).json({ message: "Curso não encontrado." });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Erro ao buscar alunos do curso." });
-  }
-};
- */
   
 exports.updateCurso = async (req, res) => {
     const cursoId = req.params.id;
